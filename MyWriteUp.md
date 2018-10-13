@@ -66,11 +66,12 @@ As part of a data generation function (described later), the next function loads
             # steering_angles.append(steering_angle_center - 0.2)    
         return images, steering_angles
         
-Because track one tends to have a lot of left turns the data for right turns is much smaller than left.  In order for the model to have enough data to quickly learn right turns I created an augmented set of data using the flipped images and steering angles.  This resulted in the model having more right turn data for training and ultimately much smoother right turns in the simulator.
+Because track one tends to have a more left turns than right the data for right turns is smaller than left.  In order for the model to have enough data to quickly learn right turns I created an augmented set of data using the flipped images and steering angles.  This resulted in the model having more right turn data for training and ultimately smoother right turns in the simulator.
  
     def augment_data(images, steering_angles):
         augmented_images = []
         augmented_steering_angles = []
+        
         for image, steering_angle in zip(images, steering_angles):
             augmented_images.append(image)
             augmented_steering_angles.append(steering_angle)
@@ -97,7 +98,7 @@ I used a generator function to deliver data to the model in batches of 32.  With
                 y_train = np.array(steering_angles)
                 yield x_train, y_train
 
-For my model I chose a Convolutional Neural Netowrk architecture similar to the Nvidia End-to-End model.  I tried out a simple regression model as well as the LeNet model but found the Nvidia model higher quality.  Within the model I started by normalizing the images.  This helped with the gradient calculations.  Next, I cropped the images so that information that is not needed is discarded.  
+For my model I chose a Convolutional Neural Netowrk architecture similar to the Nvidia End-to-End model.  I tried out a simple regression model as well as the LeNet model but found the Nvidia model higher quality.  Within the model I started by normalizing the images.  This helped with the gradient calculations.  Next, I cropped the images so that unhelpful information was discarded.  
 
 Here is an example of a cropped image where a portion of the top and bottom have been removed.
 
