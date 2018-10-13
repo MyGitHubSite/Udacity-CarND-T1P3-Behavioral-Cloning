@@ -129,14 +129,14 @@ To start the training process I loaded the samples and generated the training an
     train_generator = generator(train_samples, batch_size=32)
     validation_generator = generator(validation_samples, batch_size=32)
 
-Finally, I trained my model over 6 epochs.  I ran my model over many more epochs but found the validation stopped decreasing after about 5-6 epochs so I felt I only needed 6 epochs for a quality model.
+Finally, I trained my model over 5 epochs.  I ran my model over many more epochs but found the validation stopped decreasing after about 5-6 epochs so I felt I only needed 5 epochs for a quality model.
 
     model = nvidia_model()
     history_object = model.fit_generator(train_generator, 
                                          steps_per_epoch=len(train_samples)/32, 
                                          validation_data=validation_generator, 
                                          validation_steps=len(validation_samples)/32, 
-                                         epochs=6, 
+                                         epochs=5, 
                                          verbose=2)
     plot_history(history_object, './images/', 'model')
     model.save('model.h5')
