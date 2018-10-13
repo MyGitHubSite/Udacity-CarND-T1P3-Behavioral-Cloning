@@ -17,9 +17,7 @@ The goals / steps of this project are the following:
 
 The provided car simulator is able to capture data from three cameras (center, left and right) along with the steering angle as the car drives around a track.  The steering angle is most closely associated with the center camera.  To use the left and right camera data, adjustments to the steering angle would have to be made.  Here is an example of left, center, and right camera images of the track.
 
-![Left Image](/images/Left_Image.png)  
-![Center Image](/images/Center_Image.png)  
-![Right Image](/images/Right_Image.png)  
+![Camera Images](/images/Camera_Images.png)  
 
 We were given the options of creating our own simulator data, using the simulation data provided, or a combination of both.  My attempt was to use the provided data and supplement or replace, if needed.  Ultimately, I felt I did not need to create my own simulator data as a I found a suitable way to use the provided data.
 
