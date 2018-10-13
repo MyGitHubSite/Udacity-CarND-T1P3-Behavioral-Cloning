@@ -83,8 +83,7 @@ Because track one tends to have a more left turns than right the data for right 
             augmented_steering_angles.append(flipped_steering_angle)
         return augmented_images, augmented_steering_angles
 
-![Original Image](/images/Original_Image.png)  
-![Flipped Image](/images/Flipped_Image.png) 
+![Original Image](/images/Original_Image.png) ![Flipped Image](/images/Flipped_Image.png) 
 
 I used a generator function to deliver data to the model in batches of 32.  Within the generator function the images and steering angles are loaded as well as augmented.  There is a shuffle routine before the batches are generated that makes a trained model a little different each time, even if all things stay the same.
 
