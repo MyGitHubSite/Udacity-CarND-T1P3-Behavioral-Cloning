@@ -11,27 +11,29 @@ The goals / steps of this project are the following:
 * Test that the model successfully drives around track one without leaving the road
 * Summarize the results with a written report
 
+---
 
-![Image1](/images/Original_Image.png)  
-![Image2](/images/Flipped_Image.png) 
-![Image3](/images/Cropped_Image.png)  
+### Data Exploration
+
+The car simulator is able to capture data from three cameras (center, left and right) along with the steering angle.  The steering angle is most closely associated with the center camera.  To use the left and right camera data adjustments to the steering angle would have to be made.
+
+![Left Image](/images/Left_Image.png) ![Center Image](/images/Center_Image.png) ![Right Image](/images/Right_Image.png)  
 
 The first step in the model is top load the records from the cdv file that contain the paths to the images and the associated steering angle of an image.  I discarded all images and steering angles where the steering angle was equal to zero.  This helped balance out the dataset so that the model could more easily learn how to turn.  There were enough images and angles where the steering angle was close to zero that I did not exclude too many images for certain parts of the track (such as the bridge where it has a long straightaway). 
 
-    'Load the raw data'
     def load_samples():
         samples = []
         with open('./data/driving_log.csv') as csvfile:
             reader = csv.reader(csvfile)
             next(reader)
             for sample in reader:
-                if float(sample[3])!=0:
+                if float(sample[3])!=0:  # Do not include samples where steering angle=0
                     samples.append(sample)
         return samples
 
 Here is an image showing the steering angles before and after excluding zero steering angles.
 
-![Image1](/images/Data_Plots.png) 
+![Data Plots](/images/Data_Plots.png) 
 
 As part of the generator function, the next function loads the images from disk into batches.  The images are read in as BGR images but are converted to RGB.  Each associated steering angle is read in as well in the same order as the images.  There is data available for three cameras (center, left and right).  However, I only used the center camera data as I felt I would introduce too much training noise from the other cameras.  Fortunately, the center camera data was high quality for train and I did not need the left and right camera data.
 
@@ -68,6 +70,10 @@ As part of the generator function, the next function loads the images from disk 
             augmented_steering_angles.append(flipped_steering_angle)
         return augmented_images, augmented_steering_angles
 
+![Image1](/images/Original_Image.png)  
+![Image2](/images/Flipped_Image.png) 
+![Image3](/images/Cropped_Image.png)  
+
 I used a generator function to deliver data to the model in batches of 32.  Within the generator function the images and steering angles are loaded as well as augmented.  There is a shuffle routine before the batches are generated that makes a trained model a little different each time, even if all things stay the same.
 
     def generator(samples, batch_size=32):
@@ -81,7 +87,12 @@ I used a generator function to deliver data to the model in batches of 32.  With
                 y_train = np.array(steering_angles)
                 yield x_train, y_train
 
-For my model I chose an architecture similar to the Nvidia End-to-End model.  I tried out a simple regression model as well as the LeNet model but found the Nvidia model higher quality.  Within the model I start by normalizing the images.  This helps with the gradient calculacations.  Next I crop the images so that information that is not needed to deleted from the data that goes to the model.  One other thing I did was add a dropout layer to help prevent model overfitting.  The dropout did not have much of an impact but I left it in anyway as it didn't hurt.  I used Adam optimization and a Mean Square Error loss function.
+For my model I chose an architecture similar to the Nvidia End-to-End model.  I tried out a simple regression model as well as the LeNet model but found the Nvidia model higher quality.  Within the model I start by normalizing the images.  This helps with the gradient calculacations.  Next I crop the images so that information that is not needed to deleted from the data that goes to the model.  
+
+![Image1](/images/Original_Image.png)  
+![Image3](/images/Cropped_Image.png)  
+
+One other thing I did was add a dropout layer to help prevent model overfitting.  The dropout did not have much of an impact but I left it in anyway as it didn't hurt.  I used Adam optimization and a Mean Square Error loss function.
 
     def nvidia_model():
         model = Sequential()
@@ -151,14 +162,10 @@ This created an mp4 cideo called model.mp4.
 For my submission, I included the following files:
 
     model.py
+    drive.py
     model.h5
     model.mp4
     mywriteup.pdf
-  
-  
-  
-  
-
 
 
 
