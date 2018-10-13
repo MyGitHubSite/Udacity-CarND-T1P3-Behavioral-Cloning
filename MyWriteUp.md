@@ -185,4 +185,4 @@ For my submission, I included the following files in a zipped file:
     drive.py
     model.h5
     model.mp4
-    mywriteup.pdf
+    writeup.pdf
