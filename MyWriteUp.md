@@ -31,7 +31,7 @@ The first step in the model is top load the records from the cdv file that conta
 
 Here is an image showing the steering angles before and after excluding zero steering angles.
 
-![Image1](/images/Data_Plot.png) 
+![Image1](/images/Data_Plots.png) 
 
 As part of the generator function, the next function loads the images from disk into batches.  The images are read in as BGR images but are converted to RGB.  Each associated steering angle is read in as well in the same order as the images.  There is data available for three cameras (center, left and right).  However, I only used the center camera data as I felt I would introduce too much training noise from the other cameras.  Fortunately, the center camera data was high quality for train and I did not need the left and right camera data.
 
