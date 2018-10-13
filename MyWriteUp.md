@@ -124,3 +124,41 @@ Here is a plot of training anf validation over 20 epochs and you can see the val
 
 ![Image3](/images/samplemodel.png)
 
+---
+
+To train the model I used the command:
+
+    python model.py
+
+The output of the model is saved to a file called: model.h5.
+
+To automously drive the car in the simulator I opened the simulator in automous mod and run the command:
+
+    python drive.py model.h5
+
+Once I was satisfied the trained model was able to safely drive the car around the track I generated a video of the run around the track two times using the command:
+
+    python drive.py model.h5 model
+
+This created a folder of images of my automoous run in the simulator.
+
+To make a video of the automous run I ran the command:
+
+    python video.py model
+
+This created an mp4 cideo called model.mp4.
+
+For my submission, I included the following files:
+
+    model.py
+    model.h5
+    model.mp4
+    mywriteup.pdf
+  
+  
+  
+  
+
+
+
+
