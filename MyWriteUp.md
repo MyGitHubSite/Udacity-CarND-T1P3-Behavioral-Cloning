@@ -19,9 +19,9 @@ The provided car simulator is able to capture data from three cameras (center, l
 
 Here is an example of left, center, and right camera images of the track.
 
-![Left Image](/images/Left_Image.png) 
-![Center Image](/images/Center_Image.png) 
-![Right Image](/images/Right_Image.png) 
+![Left Image](/images/Left_Image.png)  
+![Center Image](/images/Center_Image.png)  
+![Right Image](/images/Right_Image.png)  
 
 We were given the options of creating our own simulator data, using the simulation data provided, or a combination of both.  My attempt was to use the provided data and supplement or replace, if needed.  Ultimately, I felt I did not need to create my own simulator data as a I found a suitable way to use the provided data.
 
@@ -45,7 +45,7 @@ Here is an image showing the steering angles before and after excluding zero ste
 
 ![Data Plots](/images/Data_Plots.png) 
 
-The original data contained 8060 center camera images.  After removing images where the associated steering angle was 0 I had 3650 images.  Each image had a shape of: (160, 320, 3).
+The original data contained 8036 center camera images.  After removing images where the associated steering angle was 0 I had 3675 images.  Each image had a shape of: (160, 320, 3).
 
 As part of a data generation function (described later), the next function loads the images from disk into batches.  The images are read in as BGR images but are converted to RGB.  Each associated steering angle is read in as well in the same order as the images.  There is data available for three cameras (center, left and right).  However, I only used the center camera data as I felt I would introduce too much training noise from the other cameras.  Fortunately, the center camera data was high enough quality for training that I did not need the left and right camera data.
 
