@@ -19,7 +19,9 @@ The provided car simulator is able to capture data from three cameras (center, l
 
 Here is an example of left, center, and right camera images of the track.
 
-![Left Image](/images/Left_Image.png) ![Center Image](/images/Center_Image.png) ![Right Image](/images/Right_Image.png)  
+![Left Image](/images/Left_Image.png) 
+![Center Image](/images/Center_Image.png) 
+![Right Image](/images/Right_Image.png) 
 
 We were given the options of creating our own simulator data, using the simulation data provided, or a combination of both.  My attempt was to use the provided data and supplement or replace, if needed.  Ultimately, I felt I did not need to create my own simulator data as a I found a suitable way to use the provided data.
 
@@ -81,9 +83,8 @@ Because track one tends to have a more left turns than right the data for right 
             augmented_steering_angles.append(flipped_steering_angle)
         return augmented_images, augmented_steering_angles
 
-![Image1](/images/Original_Image.png)  
-![Image2](/images/Flipped_Image.png) 
-![Image3](/images/Cropped_Image.png)  
+![Original Image](/images/Original_Image.png)  
+![Flipped Image](/images/Flipped_Image.png) 
 
 I used a generator function to deliver data to the model in batches of 32.  Within the generator function the images and steering angles are loaded as well as augmented.  There is a shuffle routine before the batches are generated that makes a trained model a little different each time, even if all things stay the same.
 
@@ -102,7 +103,7 @@ For my model I chose a Convolutional Neural Netowrk architecture similar to the 
 
 Here is an example of a cropped image where a portion of the top and bottom have been removed.
 
-![Image1](/images/Original_Image.png) ![Image3](/images/Cropped_Image.png)  
+![Original Image](/images/Original_Image.png) ![Cropped Image](/images/Cropped_Image.png)  
 
 One other thing I did was add a dropout layer to help prevent model overfitting.  The dropout did not have much of an impact but I left it in anyway as it didn't hurt.  I used Adam optimization and a Mean Square Error loss function as well as RELU activation on all layers.
 
@@ -145,7 +146,7 @@ Finally, I trained my model over 6 epochs.  I ran my model over many more epochs
 
 Here is a plot of training and validation over 20 epochs and you can see the validation starting to get worse after about 5 epochs.
 
-![Image3](/images/samplemodel.png)
+![Training/Validation](/images/samplemodel.png)
 
 ---
 
