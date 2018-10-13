@@ -15,9 +15,17 @@ The goals / steps of this project are the following:
 
 ### Data Exploration
 
-The car simulator is able to capture data from three cameras (center, left and right) along with the steering angle.  The steering angle is most closely associated with the center camera.  To use the left and right camera data adjustments to the steering angle would have to be made.
+The provided car simulator is able to capture data from three cameras (center, left and right) along with the steering angle.  The steering angle is most closely associated with the center camera.  To use the left and right camera data adjustments to the steering angle would have to be made.
+
+Here is an example of left, center, and right camera images of the track.
 
 ![Left Image](/images/Left_Image.png) ![Center Image](/images/Center_Image.png) ![Right Image](/images/Right_Image.png)  
+
+We were given the options of creating our own simulator data, using the simulation data provided, or a combination of both.  My attempt was to use the provided data and supplement or replace if needed.  Ultimately, I felt I did not need to create my own simulator data as a I found a suitable way to use the provided data.
+
+---
+
+### Description of the Model:
 
 The first step in the model is top load the records from the cdv file that contain the paths to the images and the associated steering angle of an image.  I discarded all images and steering angles where the steering angle was equal to zero.  This helped balance out the dataset so that the model could more easily learn how to turn.  There were enough images and angles where the steering angle was close to zero that I did not exclude too many images for certain parts of the track (such as the bridge where it has a long straightaway). 
 
@@ -56,7 +64,7 @@ As part of the generator function, the next function loads the images from disk 
             #steering_angles.append(steering_angle_center - 0.2)    
         return images, steering_angles
         
- Because the track tends to have a lot of left turns the data for right turns is much smaller than left.  In order for the model to have enough data to learn right turns quickly I created an augmented set of data using the flipped images and steering angles.  This resulted in the model having much smoother right turns.
+Because the track tends to have a lot of left turns the data for right turns is much smaller than left.  In order for the model to have enough data to learn right turns quickly I created an augmented set of data using the flipped images and steering angles.  This resulted in the model having much smoother right turns.
  
     def augment_data(images, steering_angles):
         augmented_images = []
@@ -87,10 +95,11 @@ I used a generator function to deliver data to the model in batches of 32.  With
                 y_train = np.array(steering_angles)
                 yield x_train, y_train
 
-For my model I chose an architecture similar to the Nvidia End-to-End model.  I tried out a simple regression model as well as the LeNet model but found the Nvidia model higher quality.  Within the model I start by normalizing the images.  This helps with the gradient calculacations.  Next I crop the images so that information that is not needed to deleted from the data that goes to the model.  
+For my model I chose a Convolutional Neural Netowrk architecture similar to the Nvidia End-to-End model.  I tried out a simple regression model as well as the LeNet model but found the Nvidia model higher quality.  Within the model I start by normalizing the images.  This helps with the gradient calculacations.  Next, I crop the images so that information that is not needed is deleted.  
 
-![Image1](/images/Original_Image.png)  
-![Image3](/images/Cropped_Image.png)  
+Here is an example of cropping images:
+
+![Image1](/images/Original_Image.png) ![Image3](/images/Cropped_Image.png)  
 
 One other thing I did was add a dropout layer to help prevent model overfitting.  The dropout did not have much of an impact but I left it in anyway as it didn't hurt.  I used Adam optimization and a Mean Square Error loss function.
 
@@ -112,7 +121,7 @@ One other thing I did was add a dropout layer to help prevent model overfitting.
         model.compile(optimizer='adam', loss='mse')
         return model
 
-To start the training process I load the samples and generate the training and validation batches for the model in batches of 32.
+To start the training process I loaded the samples and generated the training and validation data for the model in batches of 32.  The samples were split 80% for training and 20% for validation.
     
     samples=load_samples()
     train_samples, validation_samples = train_test_split(samples, test_size=0.2)
@@ -137,6 +146,8 @@ Here is a plot of training anf validation over 20 epochs and you can see the val
 
 ---
 
+### Running the Model:
+
 To train the model I used the command:
 
     python model.py
@@ -159,7 +170,11 @@ To make a video of the automous run I ran the command:
 
 This created an mp4 cideo called model.mp4.
 
-For my submission, I included the following files:
+---
+
+### Submission:
+
+For my submission, I included the following files in a zipped file:
 
     model.py
     drive.py
@@ -167,5 +182,5 @@ For my submission, I included the following files:
     model.mp4
     mywriteup.pdf
 
-
+Note: I changed the throttle value in drive.py to 30 to speed up the recorded video model.mp4.
 
