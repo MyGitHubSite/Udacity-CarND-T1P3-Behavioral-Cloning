@@ -12,9 +12,9 @@ The goals / steps of this project are the following:
 * Summarize the results with a written report
 
 
-[Image1](./images/Original_Image.png).  
-[Image2](./images/Flipped_Image.png). 
-[Image3](./images/Cropped_Image.png). 
+![Image1](/images/Original_Image.png)  
+![Image2](/images/Flipped_Image.png) 
+![Image3](/images/Cropped_Image.png)  
 
 The first step in the model is top load the records from the cdv file that contain the paths to the images and the associated steering angle of an image.  I discarded all images and steering angles where the steering angle was equal to zero.  This helped balance out the dataset so that the model could more easily learn how to turn.  There were enough images and angles where the steering angle was close to zero that I did not exclude too many images for certain parts of the track (such as the bridge where it has a long straightaway). 
 
@@ -31,7 +31,7 @@ The first step in the model is top load the records from the cdv file that conta
 
 Here is an image showing the steering angles before and after excluding zero steering angles.
 
-[Image1](./images/Data_Plot.png). 
+![Image1](/images/Data_Plot.png) 
 
 As part of the generator function, the next function loads the images from disk into batches.  The images are read in as BGR images but are converted to RGB.  Each associated steering angle is read in as well in the same order as the images.  There is data available for three cameras (center, left and right).  However, I only used the center camera data as I felt I would introduce too much training noise from the other cameras.  Fortunately, the center camera data was high quality for train and I did not need the left and right camera data.
 
@@ -122,5 +122,5 @@ Finally, I train my model over 6 epochs.  I ran my model over many more epochs b
 
 Here is a plot of training anf validation over 20 epochs and you can see the validation starting to get worse after 5 epochs.
 
-[Image3](/images/samplemodel.png)
+![Image3](/images/samplemodel.png)
 
