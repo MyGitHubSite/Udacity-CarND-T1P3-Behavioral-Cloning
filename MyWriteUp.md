@@ -1,7 +1,20 @@
+# **Behavioral Cloning** 
 
-[Image1](./images/Original_Image.png)
-[Image2](./images/Flipped_Image.png)
-[Image3](./images/Cropped_Image.png)
+---
+
+**Behavioral Cloning Project**
+
+The goals / steps of this project are the following:
+* Use the simulator to collect data of good driving behavior
+* Build, a convolution neural network in Keras that predicts steering angles from images
+* Train and validate the model with a training and validation set
+* Test that the model successfully drives around track one without leaving the road
+* Summarize the results with a written report
+
+
+[Image1](./images/Original_Image.png).  
+[Image2](./images/Flipped_Image.png). 
+[Image3](./images/Cropped_Image.png). 
 
 The first step in the model is top load the records from the cdv file that contain the paths to the images and the associated steering angle of an image.  I discarded all images and steering angles where the steering angle was equal to zero.  This helped balance out the dataset so that the model could more easily learn how to turn.  There were enough images and angles where the steering angle was close to zero that I did not exclude too many images for certain parts of the track (such as the bridge where it has a long straightaway). 
 
@@ -18,11 +31,10 @@ The first step in the model is top load the records from the cdv file that conta
 
 Here is an image showing the steering angles before and after excluding zero steering angles.
 
-[Image1](./images/Data_Plot.png)
+[Image1](./images/Data_Plot.png). 
 
 As part of the generator function, the next function loads the images from disk into batches.  The images are read in as BGR images but are converted to RGB.  Each associated steering angle is read in as well in the same order as the images.  There is data available for three cameras (center, left and right).  However, I only used the center camera data as I felt I would introduce too much training noise from the other cameras.  Fortunately, the center camera data was high quality for train and I did not need the left and right camera data.
 
-    # Function to extract images and steering angles from raw data'
     def load_data(samples):
         images = []
         steering_angles = []
@@ -44,7 +56,6 @@ As part of the generator function, the next function loads the images from disk 
         
  Because the track tends to have a lot of left turns the data for right turns is much smaller than left.  In order for the model to have enough data to learn right turns quickly I created an augmented set of data using the flipped images and steering angles.  This resulted in the model having much smoother right turns.
  
-    'Function to augment the images and steering angles'
     def augment_data(images, steering_angles):
         augmented_images = []
         augmented_steering_angles = []
@@ -60,7 +71,7 @@ As part of the generator function, the next function loads the images from disk 
 I used a generator function to deliver data to the model in batches of 32.  Within the generator function the images and steering angles are loaded as well as augmented.  There is a shuffle routine before the batches are generated that makes a trained model a little different each time, even if all things stay the same.
 
     def generator(samples, batch_size=32):
-        while True:                                                # Loop forever so the generator never terminates
+        while True:                                                
             sklearn.utils.shuffle(samples)
             for offset in range(0, len(samples), batch_size):
                 batch_samples = samples[offset:offset+batch_size]
@@ -76,17 +87,17 @@ For my model I chose an architecture similar to the Nvidia End-to-End model.  I 
         model = Sequential()
         model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=(160, 320, 3)))
         model.add(Cropping2D(cropping=((50, 20), (0, 0))))
-        model.add(Convolution2D(filters=24, kernel_size=(5, 5), strides=(2, 2), activation='relu'))     # Layer 1
-        model.add(Convolution2D(filters=36, kernel_size=(5, 5), strides=(2, 2), activation='relu'))     # Layer 2
-        model.add(Convolution2D(filters=48, kernel_size=(5, 5), strides=(2, 2), activation='relu'))     # Layer 3
-        model.add(Convolution2D(filters=64, kernel_size=(3, 3), strides=(1, 1), activation='relu'))     # Layer 4
-        model.add(Convolution2D(filters=64, kernel_size=(3, 3), strides=(1, 1), activation='relu'))     # Layer 5
-        model.add(Flatten())                                                                            # Layer 6
-        model.add(Dense(1164, activation='relu'))                                                       # Layer 7
+        model.add(Convolution2D(filters=24, kernel_size=(5, 5), strides=(2, 2), activation='relu'))     
+        model.add(Convolution2D(filters=36, kernel_size=(5, 5), strides=(2, 2), activation='relu'))     
+        model.add(Convolution2D(filters=48, kernel_size=(5, 5), strides=(2, 2), activation='relu'))     
+        model.add(Convolution2D(filters=64, kernel_size=(3, 3), strides=(1, 1), activation='relu'))     
+        model.add(Convolution2D(filters=64, kernel_size=(3, 3), strides=(1, 1), activation='relu'))     
+        model.add(Flatten())                                                                            
+        model.add(Dense(1164, activation='relu'))                                                       
         model.add(Dropout(0.4))
-        model.add(Dense(100, activation='relu'))                                                        # Layer 8
-        model.add(Dense(10, activation='relu'))                                                         # Layer 9
-        model.add(Dense(1))                                                                             # Layer 10
+        model.add(Dense(100, activation='relu'))                                                        
+        model.add(Dense(10, activation='relu'))                                                         
+        model.add(Dense(1))                                                                             
         model.compile(optimizer='adam', loss='mse')
         return model
 
@@ -111,5 +122,5 @@ Finally, I train my model over 6 epochs.  I ran my model over many more epochs b
 
 Here is a plot of training anf validation over 20 epochs and you can see the validation starting to get worse after 5 epochs.
 
-[Image3](./images/samplemodel.png)
+[Image3](/images/samplemodel.png)
 
